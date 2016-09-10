@@ -1,2 +1,1 @@
-# myblog
-this is a repository for remember my learning
+1 这个是用于存放我自己学习过的技术知识。
