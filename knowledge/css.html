@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>css3</title>
+</head>
+<body>
+    <div>
+        <h4>css选择器</h4>
+        <h5>nth-child(n)和nth-of-type(n)的区别就是前者是不管任何类型，只是一个元素下面的第几个对象，而后者是相应类型里面的第几个对象。</h5>
+        <h5>针对下面这个案例如果我选择ul>li:nth-child(1)时候是没有效果的，因为其选择的是ul下面的第一个div，如果我想让1那个li背景被选中怎么办呢，这里可以使用ul>li:nth-of-type(1)这个选择器。</h5>
+        <ul>
+            <div>0</div>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+        <h5>not:([])选择器是用来选择页面里面除了特定元素之外的其他所有元素，比如说 input:not([type=submit]){......}</h5>
+        <h5>
+            ::first-letter 用来选择文本快的第一个字母。::first-line是用来选择文本快的第一行文字。
+            ::before和::after主要是用于清楚浮动的，一般都需要配合content属性。
+            ::selection是用来表示我们手动选择网页上面的文字时候显示的样式（比如我们选中要复制时候被选中的文字样式），只有2个属性，一个是background，另外一个是color
+        </h5>
+    </div>
+    <div>
+        <h4>边框</h4>
+        <h5>border-color这个属性可以设置为border-top-colors:#111 #222 #333，这里一个颜色代表一个像素，如果之前设置的border-width为10px，这里颜色只有5个的话，另外的5px的颜色就是最后面的那个颜色，但是目前只有火狐支持。</h5>
+        <h5>border-image-slice中最后如果有Fill意思就是中间那一块会被保留，默认是不保留的。</h5>
+        <h5>border-radius属性包含用/分开，/前面的是水平方向，/后面的是垂直方向。比如5px/10px表示水平方向是5px，垂直方向是10px。</h5>
+        <h5>border如果设置的是2个值，则top-left和bottom-right取第一个值，top-right和bottom-left取第二个值。如果是3个值，则top-left取第一个值。top-right、bottom-right取第二个值，bottom-left取第三个值，如果取4个值的时候，top-left第一个值，top-right第二个值，bottom-right取第三个值，bottom-left取第四个值。</h5>
+        <h5>border-radius还有内半径和外半径的区别，当border-radius半径小于或等于border宽度时候，元素边框内部就不具备圆角效果。</h5>
+        <h5>圆</h5>
+        <div style="width:20px;height:20px;border-radius:50%;background:red"></div>
+        <h5>半圆</h5>
+        <div style="height:10px;width:20px;border-radius:10px 10px 0 0;background:red;margin-bottom:10px"></div>
+        <div style="height:20px;width:10px;border-radius:0 10px 10px 0;background:red;margin-bottom:10px"></div>
+        <div style="height:10px;width:20px;border-radius:0 0 10px 10px;background:red;margin-bottom:10px"></div>
+        <div style="height:20px;width:10px;border-radius:10px 0 0 10px;background:red;margin-bottom:10px"></div>
+        <h5>扇形</h5>
+        <div style="width:20px;height:20px;background: red;border-radius:20px 0 0 0"></div>
+        <h5>box-shadow如果想只有单边有阴影效果，可以添加box-shadow的扩展半径属性上去。</h5>
+    </div>
+    <div>
+        <h4>css3背景</h4>
+        <h5>css3背景里面可以在同一个元素内添加多个背景。可以让设计师改变背景图片大小尺寸。</h5>
+        <h5>背景的基本属性 background-color background-image background-repeat background-attachment background-position</h5>
+        <h5>新增属性 background-origin background-clip background-size background-break</h5>
+        <h5>默认状态了background-position的原始点都是按照元素的左上角为原点，但是css3里面postion-origin是用于设置background-position的原点。其有3个属性，第一个是paddin-box，第二个是border-box第三个是content-box,他们的区别是第一个是从边框线的内部开始，第二个是从边框线的外部开始，第三个是从内容开始。默认情况下是从padding-box</h5>
+        <h5>同一个div上面添加多张背景图片，可以用background-images:url(),url()</h5>
+    </div>
+    <div>
+        <h4>文本</h4>
+        <h5>word-break的值设置为keep-all的时候中文只有在逗号等符号的条件下才能换行，要不然会冲破整个div。</h5>
+        <h5>当word-wrap的值为normal时候长文本和url地址都会超出容器div的边框，当值设置为word-wrap的值设置为break-word时候，长文本和url都会自动换行，但是不完美的是单词也会自动换行，比如html5，可以上一段是ht，下一段是从【表情】
+        开始了，这时候有可以设置overflow的值为hidden</h5>
+    </div>
+    <div>
+        <h4>css3颜色特性</h4>
+        <h5>一共有216种安全色。</h5>
+        <h5>ie8版本一下不支持opacity，但是可以通过滤镜来实现效果，filter:alpha(opacity=透明值)</h5>
+        <h5>rgba除了颜色外增加了透明度，rgba只会对当前元素产生影响，而对之后的元素不会有影响，但是opacity会对之后元素产生影响。</h5>
+    </div>
+    <div>
+        <h4>盒模型</h4>
+        <h5>textarea默认具有resize，如果要让textarea固定不变，可以使用resize：none，这样就无法拖动了。</h5>
+        <h5>outline只有被激活时候才能显示，所以如果输入框被激活时候不想让outline显示，可以设置为outline：none</h5>
+        <h5>outline和border很类似，但是不能和border一样可以切割成4条线，outline只能作为一个整体，但是他不会影响盒子的布局，所以给元素添加外边框的时候，如果不要求只能有一边的情况下，最好是用outline去实现</h5>
+    </div>
+    <div>
+        <h4>css3伸缩布局盒模型</h4>
+        <h5>主轴的不一定是横向的，这个取决于justify-content属性。默认情况下flex-direction的值为row也就是说是横向，如果值是column,则主轴方向是纵向的。</h5>
+        <h5>伸缩盒display的值可以设置为inline-flex和flex这2种，但是这里需要注意的是如果元素设置为脱离流元素的话，不管设置的是inline-flex还是flex都会自动变成flex</h5>
+        <h5>一个伸缩盒的内容具有0个以上的伸缩项目，其每个子元素都会成为一个单独的伸缩项目，且用户代理会将任何直接在伸缩盒里面的连续文字块抱起来变成匿名伸缩项目。</h5>
+        <h5>flex-warp可以用来设置伸缩项目是否换行，默认情况下是nowrap。</h5>
+        <h5></h5>
+        <h5></h5>
+        <h5></h5>
+        <h5></h5>
+        <h5></h5>
+        <h5></h5>
+        <h5></h5>
+        <h5></h5>
+        <h5></h5>
+
+
+
+
+    </div>
+    <div>
+        <h4>css3多列布局</h4>
+        <h5>多列布局的属性包括columns(column-count column-width)、column-gap、column-rule、column-span、column-fill</h5>
+        <h5>
+            column-width可以单独使用也可以配合使用，当其单独使用的时候，如果宽度小于整体的宽度并且有足够多的空间可以分列时候，就会分列。
+            当2个属性都存在的时候会优先使用column-width属性，如果内容超过了列数就会增加，反之如果内容少于宽度时候也会用相应设置的列数显式。
+        </h5>
+        <h5>column-width表示给元素定义一个最小宽度。column-count指的是最大的列数。如果column-width设置了为auto，这时候显示的列数就是设置的column-count值</h5>
+        <h5>column-rule主要来定义列和列之间的边框宽度、边框样式和边框颜色，有点类似于border属性。但是column-rule不占用空间位置。</h5>
+        <h5>column-span有2个值，一个是all一个是none，none表示不跨越任何列。主要是用于设置标题。</h5>
+        <h5>column-fill用于定义列的高度，auto表示各列的高度会随着其内容的变化而自动变化，balance表死各列的高度是由内容最多的一列的高度所决定</h5>
+        <h5></h5>
+        <h5></h5>
+    </div>
+    <div>
+        <h4>css3变形</h4>
+        <h5>transform-origin指定元素的中心点在哪里。可以移动、旋转、缩放元素。</h5>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

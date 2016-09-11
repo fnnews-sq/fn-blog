@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>node知识整理</title>
+</head>
+<body>
+    <div>
+        <h1>gulp</h1>
+        <div>
+            <h4>关于几个最常用的命令</h4>
+    <pre>
+        npm install -g gulp //全局安装gulp   默认安装的是最新版本号，也可以自定义版本号，比如 npm install -g express@3.06
+        npm install gulp@"2.91" //2.91是已经发布的版本，这个命令是获取到最新的版本，然后复制C:\Users\{你的Windows用户名}\AppData\Roaming\npm\node_modules\npm下的文件到你的 NodeJS安装目录下的 \node_modules\npm 中，覆盖掉原有的全部文件
+        npm install gulp -save //安装的时候将信息写入package.json中项目路径中。
+        npm update gulp //更新node模块 也就是gulp的最新版本
+        npm uninstall gulp //卸载nodejs模块
+        npm init //这个主要用于创建一个package.json包，里面包括名称、版本、作者信息。
+        npm root //查看当前包的安装路径。
+
+        //package.json里面需要用到的一些常用的插件。
+        npm install gulp --save-dev
+        编译Sass (gulp-ruby-sass)
+        Autoprefixer (gulp-autoprefixer)
+        缩小化(minify)CSS (gulp-minify-css)
+        JSHint (gulp-jshint)
+        拼接 (gulp-concat)
+        js压缩(Uglify) (gulp-uglify)
+        图片压缩 (gulp-imagemin)
+        即时重整(LiveReload) (gulp-livereload)
+        清理档案 (gulp-clean)
+        图片快取，只有更改过得图片会进行压缩 (gulp-cache)
+        更动通知 (gulp-notify)
+
+        //这些插件的安装方法
+        npm install gulp-ruby-sass gulp-autoprefixer gulp-minify-css gulp-jshint gulp-concat gulp-uglify gulp-imagemin gulp-clean gulp-notify gulp-rename gulp-livereload gulp-cache --save-dev
+    </pre>
+            <h4>gulp使用流程</h4>
+    <pre>
+        第一步：安装全局gulp npm install -g gulp
+        第二步：新建一个项目，然后在项目的根目录里面新建一个package.json的文件，package.json里面主要是用来安装存放一些需要用到的gulp插件，比如说压缩插件、sass编译插件等。安装packag.json可以手动新建一个文件，但是比较方便的是通过node，首先在cmd里面找到项目所在的路径，然后npm init，然后根据提示一步一步填写相应的内容
+        第三步：安装完package.json文件之后，我们需要安装一些我们需要的文件，比如我们需要sass编译，这时候我们需要安装gulp-ruby-sass，具体看上面的代码
+        第四步：安装完这些插件之后，我们需要新建一个gulpfile.js(名字可以随便取)，这个文件主要是用来写任务。
+        第五步：写好任务后我们就可以执行gulpfile.js这个文件了，一般会使用node gulpfile.js或者用webstrom 使用webstrom只需要右击gulpfile.js，然后show gulp tasks。这样任务就完成了。
+    </pre>
+            <h5>gulp.task('css',["green"],fn)有3个参数，第一个是任务的名称，第二个是检测上一个任务有没有完成，第三个是回调函数，也就是该任务的具体内容，一般都会省略第二个参数。</h5>
+            <h5>gulp.src(['js/**/*.js', '!js/**/*.min.js'])选择未压缩的文件去除掉已经压缩好的文件</h5>
+            <h5>gulp的使用方法可以参照<a href="http://www.cnblogs.com/2050/p/4198792.html">gulp的使用方法</a> </h5>
+        </div>
+    </div>
+</body>
+</html>

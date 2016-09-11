@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>javascript权威指南</title>
+</head>
+<body>
+    <div class="first">
+        <h3>第一章</h3>
+        <div class="m-l">
+            <h4>1.1 javascript语言核心</h4>
+            <h5>对象是名/值的集合，或字符串到值映射的集合。</h5>
+            <h5>表达式仅仅计算出一个值但并不做任何操作，他并不改变程序的运行状态。而语句并不包含一个值（或者说他包含的值我们并不关心），但他们改变程序的运行状态。</h5>
+            <h5>当函数赋值给对象的属性我们称之为“方法”，所有的javascript对象都含有方法</h5>
+<pre>
+    var a=[];
+    a.push(1,2,3);  向数组a里面添加元素
+    a.reverse() //(3,2,1) 将数组元素的次序翻转
+</pre>
+<pre>
+    这个是2个点之间的距离，勾股定理的案例
+    var Point=function(a,b){
+        this.a=a;
+        this.b=b;
+    };
+    Point.prototype.r=function(){
+        return Math.sqrt(this.a*this.a+this.b*this.b);
+    };
+    var point=new Point(3,4);
+        point.r(); //5
+</pre>
+            <h4>1.2 客户端javascript</h4>
+<pre>
+    这个是用js的方法给元素绑定事件
+    window.onload=function(){
+        var images=document.getElementByTagName("img");
+        for(var i=0;images.length>i;i++){
+            var image=images[i]
+            if(image.addEventListener){
+                image.addEventListener("click",hide,false);
+            }else{
+                //这个是为了兼容ie8
+                image.attachEvent("onclick",hide)
+            }
+        }
+    }
+
+    function hide(event){
+        event.target.style.visibility="hidden";
+    }
+</pre>
+        </div>
+    </div>
+    <div class="second">
+        <h3>第二章 词法结构</h3>
+        <p>
+            <h4>2.1 字符集</h4>
+            <h5>javascript标识符必须要以字母、下划线或者美元符号开始，首字母不能是数字。</h5>
+            <h4>2.4 标识符和保留字</h4>
+            <h5>每一种特定的javascript运行环境（客户端、服务器端等）都有自己的一个全局属性列表</h5>
+            <h4>2.5 可选的分号</h4>
+            <h5>
+                1.涉及到return、break和continue语句的场景中，如果这3个关键字后紧跟着换行，javascript则会在换行出填补分号。
+                2.在涉及“++”和“--”运算符的时候，如果将其用作后缀表达式，它和表达式应当在同一行，否则，行尾将填补分号。
+            </h5>
+    <pre>
+        如：x
+            ++
+            y
+        这段代码会解析成“x；++y”，而不是“x++；y”
+    </pre>
+        </p>
+
+    </div>
+    <div class="third">
+        <h3>第三章 类型、值和变量</h3>
+        <p>
+            <h4>第三章 文章介绍</h4>
+            <h5>javascript的数据类型分为两类：原始类型和对象类型。原始类型包括数字、字符串和布尔值。还有2个特殊的原始值：null和undefined。</h5>
+            <h5>对象是属性的集合，每个属性都是由“名/值对”，普通的javascript是“命名值”的无序集合，而数组是带有编号的值的有序集合。</h5>
+            <h5>除了数组类和函数类之外，javascript语言核心定义了其他三种有用的类，分别是日期类、正则类以及错误类。</h5>
+            <h5>只有javascript对象才能拥有方法，但是，数字、字符串以及布尔值都可以拥有自己的方法，只有null和undefined是没有拥有方法的值。</h5>
+            <h4>3.1 数字</h4>
+            <h5>javascript不区分整数值和浮动数值。所有的数字都是浮动数值表示，最大值是1.7976931348623157*10<sup>308</sup>,最小值是5*10<sup>-324</sup></h5>
+            <h5>javascript中的数字格式，能够表示的整数范围是从-9007199254740992-- +9007199254740992</h5>
+            <h5>16进制是以“0x”或者“0X”位前缀，其后跟随十六进制数串的直接量，是由0--9以及a--f组成。如0xff=15*16+15.</h5>
+            <h5>8进制表示用“0”开始，其后跟随一个有0-7之间数字组成的序列。 如0377=3*64+7*8+7，在es6下面是不支持的。</h5>
+            <h5>如果要判断某个变量值是不是NaN，可以用x！=x来判断，只有NaN时候会返回true</h5>
+<pre>
+    日期的一些表达式
+    var then=new Date(2011,0,1);//Sat Jan 01 2011 00:00:00 GMT+0800 (中国标准时间)
+    var later=new Date(2011,0,1,17,10,30);//Sat Jan 01 2011 17:10:30 GMT+0800 (中国标准时间)
+    var now=new Date();//Sun Jul 17 2016 12:07:56 GMT+0800 (中国标准时间) 得到当前时间
+    var elapsed=now-then;// 174917276677 日期减法：计算时间间隔的毫秒数；
+        later.getFullYear();//2011
+        later.getMonth();//0从0开始计数的月份
+        later.getDate()//1从1开始计数的天数
+        later.getDay()//5 得到的是星期几
+        later.getHours()//17 得到的是当地时间
+        later.getUTCHours()// 9用utc表示小时的事件，基于时区；
+</pre>
+        </p>
+        <h4>3.2 文本</h4>
+<pre>
+    字符串的方法
+    var s="hello,world";
+    s.charAt(0);//"h":第一个字符
+    s.charAt(s.length-1)//"d":字符串的最后一个字符；
+    s.substring(1,2);//"el":从字符串的第一个开始，一共取2个字母；
+    s.slice(1,2) //同上
+    s.slice(-3) //"rld":字符串的最后3个字母；
+    s.indexOf("l") //2:字母l首次出现的位置；
+    s.lastIndexOf("l") //10:字母l最后出现的位置；
+    s.indexOf("l",3) //3:在位置3以后出现字母l的位置；
+    s.split(",") //["hello","world"]分割成数组；
+    s.replace("h","H") "Hello,world":将字母h改为大写的H；
+    s.toUpperCase() //"HELLO,WORLD":将字母变成大写；
+</pre>
+        <h4>3.3 布尔值</h4>
+        <h5>只有undefined、null、0、-0、NaN、""、false会转换为false；其余的都会转换为true</h5>
+        <h5>如果想要传一个空值作为参数，最好是传null</h5>
+        <h4>3.5 全局对象</h4>
+        <h5>全局属性：undefined、Infinity、NaN/h5></h5>
+        <h5>全局函数：isNaN()、parseInt()和eval()</h5>
+        <h5>构造函数：Date()、RegExp()、String()、Object()、Array()</h5>
+        <h5>全局对象 Math和JSON</h5>
+        <h4>3.6 包装对象</h4>
+        <h5>创建一个字符串或者布尔值或者数字的时候都会通过String()/Boolean()/Number()的构造函数来创建一个临时的对象，而这个对象在调用之后会自动删除。</h5>
+        <h4>3.7 不可变的原始值和可变的对象引用</h4>
+        <h5>对象的比较并非值的比较：即使2个对象包含同样的属性级相同的值，他们也是不相等的。各个索引元素完全相等的2个数组也不相等。</h5>
+        <h5>我们通常将对象称之为引用类型，以此和javascript的基本类型区分开来，对象值都是引用</h5>
+<pre>
+    对象之间的引用
+    var a=[];
+    var b=a;
+    b[0]=1;
+    a[0] //1:变量a也修改了引用的数组；
+    a===b //true
+
+    //复制一份对象快照
+    var a=["1","2","3"];
+    var b=[];
+    for(var i=0;a.length>i;i++){
+        b[i]=a[i];
+    };
+    通过这种方式复制了一份a数组的快照，这时候去改变b数组对a数组不会有任何影响，a===b//false
+
+    //比较2个数组之间是不是相同
+    function equalArrays(a,b){
+        if(a.length!=b.length)return false;
+        for(var i=0;a.length>i;i++){
+            if(a[i]!==b[i])return false;
+        return true;
+        }
+    }
+</pre>
+        <h4>3.8 类型转换</h4>
+        <h5>除了none和undefined之外的任何值都具有toString()方法。</h5>
+<pre>
+    数字到字符串之间的转换有3个方法 toFixed();toExponential();toPrecision();
+    var n=123456.789;
+    n.toFixed(0) //"123456";
+    n.toFixed(2) //"123456.79";      //转换为字符串的时候带有几位小数
+    n.toExponential(1) //"1.2e+5"
+    n.toExponential(3) //"1.235e+5"  //先转换为指数，然后再根据参数决定带几位小数
+    n.toPrecision(7); //"123456.8"
+    n.toPrecision(10); //"123456.7890"  //这个表示一共保留几位数
+</pre>
+        <h5>Number()会将传入的值转换为整数或者浮点数直接量，而parseInt()解析整数和parseFloat()解析整数或者浮点数，这2个可以解析前面是数字但是后面是文字的字符串。</h5>
+        <h5>对象转换为原始值的时候一般先调用toString(),然后再调用valueOf(),这里需要注意的是日期类的转换如果我实例化一个现在时间，然后用valueOf(),就能返回1970年1月1日到现在时间的毫秒数。</h5>
+        <h5>valueOf()的方法如果不能转换为数字则会返回其本身。</h5>
+        <h5>"+" "==" ">" "<"都会将符合函数转换为原始值 +会转换为字符串，而-则会转换为数字。</h5>
+        <pre>
+            var d=new Date();
+            d.valueOf();
+        </pre>
+        <h4>3.9 变量声明</h4>
+        <h5>如果没有用var给一个变量进行声明，相当于是给windows对象声明了一个变量。</h5>
+        <h4>3.10 变量作用域</h4>
+        <h5>函数参数也是局部变量，局部变量的优先级高于同名的全局变量。</h5>
+        <h5>声明会被提前。如果给其赋值了，一定要写在最上面。这样下面才能获取到其值，如果写在congsole下面就会获取不到，返回undefined。</h5>
+        <h5>用var声明一个变量时候，创建的这个属性是不可配置的，所以删除不了，但是如果不是用var声明的说明这个属性是可以被删除的。javascript的全局变量就是全局对象的一个属性</h5>
+    </div>
+    <div class="four">
+        <h3>第四章</h3>
+        <p>
+            <h4>4.7 运算符概述</h4>
+            <h5>?:三元运算符</h5>
+            <h5>属性访问表达式和调用表达式的优先级是最高的，赋值运算符的优先级议案是最低的</h5>
+            <h5>一元操作符、赋值和三元条件运算符都具有从右往左的结合性。</h5>
+            <h4>4.8 算数表达式</h4>
+            <h5>递增“++”运算符的返回值依赖于他相对于操作数的位置，当运算符在操作数之前称之为前增量，他对操作数增量计算并返回计算后的值。当运算符在操作数之后称之为后增量，它对操作数进行增量计算，单返回的是未增量计算的值。</h5>
+            <h5>javascript对象的比较是引用的比较，而不是只的比较，对象和其本身是相同的，单核其他任何对象都不相等。</h5>
+            <h5>字符串的比较中大写的一定是大于小写的</h5>
+            <h5>+运算符更喜欢转换为字符串，而比较运算符更喜欢转换为数字。</h5>
+            <h5>在&&中运算符首先计算左操作符的值，如果左侧计算的值为false，则运算结果就会采用左侧计算的结果，并不会去计算右侧值的结果。如果左侧值是真值的话，返回的一定是右侧的值（无论右侧的值是真或是假）</h5>
+            <h5>在||中运算符首先计算左操作符的值，如果左侧计算的值为true，则运算结果就会采用左侧计算的结果，并不会去计算右侧值的结果。如果左侧值是假值的话，返返回的一定是右侧的值（无论右侧的值是真或是假）</h5>
+<pre>
+    typeof最常用的是写在表达式中
+    （typeof value=="string"）?"'"+value+"'":value;
+</pre>
+        </p>
+    </div>
+    <div class="five">
+        <h3>第五章</h3>
+        <p>
+            <h4>复合语句和空语句</h4>
+            <h5>复合语句就是将多个表达式连接在一起，形成一个表达式，这就是复合语句。</h5>
+            <h5>javascript没有块级作用域，在语句块中声明的变量不是只有语句块私有的。</h5>
+            <h4>声明语句</h4>
+            <h5>通过var声明的语句是无法通过delete来删除的。</h5>
+            <h5>函数定义不能出现再if、while等其他任何语句中，所以函数声明并不是真正意义上面的语句。</h5>
+            <pre>
+                case里面的值和n进行比较的时候是用===
+                swich(n){
+                    case 1:
+                        function(){};
+                        break;
+                    case 2:
+                        function(){};
+                        break;
+                    default:
+                        function(){};
+                        break;
+                }
+            </pre>
+            <h5>do while至少会执行一次。</h5>
+            <h5>for in循环中首先计算object存不存在，然后在把其属性传递给i;</h5>
+            <h5>先定义的属性先枚举。</h5>
+            <h4>标签语句</h4>
+            <h5>break和continue是javascript唯一可以使用标签语句的2个。</h5>
+            <h5>break、continue、return 这3个不能换行，要不会自动补全；</h5>
+            <pre>
+                //报错用新的方法 new Error();
+                function factorial(x){
+                    if(x<0) throw new Error("x不能为负数")；
+                    for(var f=1;x>1;f*=x,x--)
+                        return f
+                }
+                只有在查找作用域链的时候才会用到这个方法，如果新声明一个对象的话是不行使用这个方法的。在严格方法里面不能用
+                with(object) statement;
+                with(document.getElement("idname")){
+                    name.value="";//这里可以省略上面重复的document.getElement这个前缀。
+                    age.value=""
+                }
+            </pre>
+            <h5></h5>
+        </p>
+    </div>
+    <div class="six">
+        <h3>第六章</h3>
+        <p>
+            <h4>前言</h4>
+            <h5>对象最常见的用法是创建、设置、查找和删除、检测以及枚举其属性</h5>
+            <h5>除了字符串、数字、true、false、null和undefined以外，javascript的值都是对象。</h5>
+            <h5>属性名可以是任意的字符串的，但是不能同名，也可以是一个（或者2个都有）getter或setter函数。</h5>
+            <h5>属性除了名字和值之外，每个属性还有与之相关的值，称之为“属性特性”，包含“可写”、“可枚举”、“可配置”</h5>
+            <h5>对象除了包含属性之外还有3个相关的对象特性，分别是对象的原型（prototype）、对象的类、对象的扩展标记。</h5>
+            <h5>3类javascript对象分别为内置对象、宿主对象、自定义对象</h5>
+            <h5>2类属性分别为自有属性和继承属性。</h5>
+            <h4>6.1 创建对象</h4>
+            <h5>创建对象的方式分为3种、对象直接量、用new去实例化一个对象以及用Object.create()去创建一个对象，如var a=Object.create(Object.prototype);</h5>
+<pre>
+    inherit();返回一个继承原型对象p属性的新对象
+    function inherit(p){
+        if(p==null) throw TypeError();
+        if(Object.create)
+            returne Object.create(p);
+        var t=typeof p;
+        if(t!=="object"&&t!=="function") throw TypeError();
+        function f(){};
+        f.prototype=p;
+        return new f();
+    }
+</pre>
+            <h4>属性的查询和设置</h4>
+            <h5>继承只有在查询的时候可以感受到，在设置的时候其实是不存在的</h5>
+            <h5>如果给一个对象赋值中的一个属性名和它继承的原型中的一个属性名相同，输出的时候该赋值的属性名的值会覆盖继承来的值，但是不会去改变原型里面该属性的值</h5>
+<pre>
+    var k={x:1};//原型
+    var o=Object.create(k);
+    o.x=3;
+    这时候可以发现o的x这个属性名的值对于o来说会变成3，但是k里面的x的值依然会是1，并不会被o的改变而改变。
+</pre>
+            <h4>6.3 删除属性</h4>
+            <h5>delete只能删除自有属性不能删除继承属性。如果删除的是原型对象上面的属性，这将会影响到所有继承这个原型的对象。delete不能删除可配置性为false的属性，也不能删除全局属性。</h5>
+            <h4>6.4 检测属性</h4>
+            <h5>检测属性是否存在与对象里面可以通过in、hasOwnPreperty()、prototypeIsEnumerable()方法来完成这个工作。</h5>
+            <h5>in可以检测自有属性以及继承的属性，而hasOwnPreperty只能检测自有属性、prototypeIsEnumerable检测的是自有属性，并且该属性是可枚举的。类似与toString这种属性。</h5>
+            <h5>除了用in，还有更加方便的方法就是用!==undefined这种方法。这2个方法可以通用，但是在属性的值为undefined的时候只能用in</h5>
+            <h4>6.5 枚举属性</h4>
+            <h5>for in可以遍历对象中所有可枚举的属性（包括自有属性以及继承属性）</h5>
+<pre>
+     function extend(o,p){
+        for(porp i p){
+            o[prop]=p[prop];
+        }
+        return o;
+    }
+</pre>
+            <h5>除了for in虚幻，还有Object.keys()可以返回对象中可枚举的自由属性的名称组合。Object.getOwnPropertyNames()返回的是对象所有的自由属性名称。</h5>
+            <h4>6.6 属性getter和setter</h4>
+            <h5>描述对象属性有2种，一种是数据属性，一个是存取器属性。</h5>
+            <h5>对象属性是由名称、值以及一组特殊性构成的。属性值可以有一个或者2个方法代替，这2个方法就是getter以及setter。这2个称之为“存取器属性”，和“数据属性”不同</h5>
+<pre>
+    定义存取器属性最简单的方法是使用对象直接量语法的一种扩展写法；
+    var o=｛
+        data-prop:value,
+        get accessor_prop(){},
+        set accessor_prop(){}
+    ｝
+    案例：
+    var obj = {
+            val:100,
+            get getval(){
+                return this.val;
+            },
+            set setval(x){
+                this.val = x;
+            }
+        }
+        console.log(obj.getval);//100
+        obj.setval = 101;
+        console.log(obj.getval);//101
+</pre>
+            <h4>6.7 属性的特性</h4>
+            <h5>数据属性描述对象的属性有value、weiteable、enumerable、configurable这4个。</h5>
+            <h5>存取器属性的描述有setter、getter、enumerable、configurable这4个</h5>
+            <h5>通过调用Object.getOwnPropertyDescriptor()可以获取某个对象特定属性的属性描述符。对于继承或是没有的属性，返回undefined。</h5>
+            <h5>如果想要获得继承属性的特性，需要遍历原型链Object.getPrototypeOf();</h5>
+            <h5>如果想要设置属性的特性，或者让新建属性具有某种特性，则需要调用Object.definePEOperty()来对属性进行描述。该方法不能修改继承属性。</h5>
+            <h5>如果要修改多个属性，则需要使用Object.defineProperties(),它包含2个参数，第一个是要修改的对象，第二个是映射表。</h5>
+<pre>
+    Object.defineProperty(o,"x",{
+        value:1,
+        writeable:true,
+        enumerable:false,
+        configurable:true
+    });
+</pre>
+            <h4>6.8 对象的三个属性</h4>
+            <h5>每个对象都有与之相关的原型、类和可扩展性。</h5>
+            <h5>通过对象直接量创建的对象是用Object.prototype作为原型，通过new创建的对象是使用构造函数的prototype属性作为他们的原型，通过Object.create()创建的对象是使用第一个参数作为他们的原型。</h5>
+            <h5>es3中会通过constructor.prototype来检测对象的原型，es5会使用Object.getPrototypeOf()来查询他的原型。</h5>
+            <h5>检测一个对象是否为另外一个对象的原型可以通过isPrototypeOf()的方法来检测</h5>
+<pre>
+    var p={x:1};
+    var o=Object.create(p);
+    p.isPrototypeOf(o) //true o继承自p；
+    Object.prototype.isPrototypeOf(p) //true p继承自Object.prototype
+</pre>
+            <h5>想要获得对象的类(其实就是6种基本类型+3种些内置对象以及宿主对象，布尔值/数字/null/undefined/object/string/array/function/window/date/regexp)，可以笤俑对象的toString()方法，然后提取已经返回的字符串的第8个到倒数第二个位置之间的字符。</h5>
+<pre>
+    function classof(o){
+        if(o===null) return "Null";
+        if(o===undefined) return "Undefined";
+        return Object.prototype.toString.call(o).slice(8,-1);
+    }
+    classof(null) //"Null"
+    classof(false) //'Boolean'
+</pre>
+            <h5>es5用Object.esExtensible()来判断对象是否可扩展。如果想将对象转换为不可扩展，需要调用Object.preventExtensions(),将待转换的对象作为参数传进去。一旦将对象转换为不可扩展的，就不能将其转换会可扩展的了。</h5>
+            <h4>6.9 序列化对象</h4>
+            <h5>对象序列化可以将对象的状态转换为字符串，也可以将字符串还原为对象。es5提供了内置函数JSON.parse()、JSON.stringify()用来序列化和还原javascript对象。</h5>
+            <pre>
+                o={x:1,y:{z:[false,null,""]};
+                s=JSON.stringify(0); //s是‘{"x":1,"y":{"z":[false,null,""]}}’
+                p=JSON.parse(s)  //p是o的深拷贝；
+            </pre>
+            <h4>6.10 对象方法</h4>
+            <h5>对象方法包括toString()/toLocaleString()/valueOf()/toJSON()</h5>
+        </p>
+    </div>
+    <div class="seven">
+        <h3>第七章 数组</h3>
+        <div>
+            <h4>前言</h4>
+            <h5>数组是值的有序集合，每个值都叫做一个元素，每个元素在数组中都有一个位置，用数字表示，称之为索引。</h5>
+            <h5>数组的索引第一个为0，最大的索引为4294967294（2<sup>32</sup>-2）</h5>
+            <h5>稀疏数组表示数组元素的索引不一定是连续的，他们之间可以有空缺。每个javascript数组都有一个length属性，对于非稀疏数组来说，length属性就是数组元素的个数，而对稀疏数组来说，length比所有元素的索引要大。</h5>
+            <h5>用数字索引来访问数组元素一半来说比访问常规的对象属性要快很多。</h5>
+            <h4>数组元素的读和写</h4>
+            <h5>所有的索引都是属性名，但只有0-2<sup>32</sup>-2之间的整数属性名才是索引。</h5>
+            <h5>数组就是一个对象，他们可以从原型中继承元素，数组可以定义元素的getter和setter方法。</h5>
+            <h4>7.4 数组长度</h4>
+            <h5>可以通过Object.defineProperty()让数组的length属性变成只读的</h5>
+            <h4>7.5 数组元素的添加和删除</h4>
+            <h5>可以通过push()方法在数组末尾添加一个或者多个元素。</h5>
+            <h5>在数组开始处添加一个元素，可以使用unshift()方法</h5>
+            <h5>可以通过delete运算符来删除数组元素。通过delete会让一个数组变成稀疏数组。</h5>
+            <h5>pop()方法可以让数组的尾部删除一个元素，与push()刚好相反。</h5>
+            <h5>shift()可以让数组头部删除一个元素</h5>
+            <h5>splice()用来插入、删除和替换数组元素，他会根据需要修改ilength属性。</h5>
+            <h4>7.6 数组遍历</h4>
+            <h5>for in循环的时候遍历是通过数组的索引。</h5>
+<pre>
+    forEach()方法可以按照索引的顺序传递给定义的一个函数；
+    var data=[1,2,3,4,5];
+    var sum=0;
+    data.forEach(function(x){
+        sun+=x;
+    })
+    return sum; //15
+</pre>
+            <h4>7.8 数组方法</h4>
+            <h5>join()将数组中所以uyuansu转换为字符串并链接在一起，最后返回生存的字符串</h5>
+<pre>
+    var a=[1,2,3];
+    a.join() //"1,2,3";
+    a.join("5") //"1,2,3,5"
+</pre>
+            <h5>reverse()是将数组中的元素颠倒顺序，返回逆序的数组。注意使用这个方法后数组本身就发生了变化。</h5>
+<pre>
+    var a=[1,2,3];
+    a.reverse().join() //"3,2,1"; 现在a就是[3,2,1];
+</pre>
+            <h5>sort()是将数组中的元素排序并返回排序后的数组，当不带参数体用sort()时候，数组元素是按照字母表顺序排列。</h5>
+<pre>
+    var a=new Array("banana","apple","cherry");
+    a.sort();//["apple","banana","cherry"];
+</pre>
+            <h5>concat()方法创建并返回一个新数组，不会影响数组</h5>
+<pre>
+    var a=[1,2,3];
+    a.concat(4,5); //[1,2,3,4,5]
+</pre>
+            <h5>slice()返回制定数组的一个片段或子数组 不会影响数组</h5>
+<pre>
+    var a=[1,2,3,4];
+    a.slice(0,3);//1,2,3;
+</pre>
+            <h5>splice()是在数组中插入或删除元素的通用方法，splice()会修改调用的数组</h5>
+<pre>
+    var a=[1,2,3,4,5,6];
+    a.splice(4); //[5,6] a=[1,2,3,4];
+    a.splice(1,2) //[2,3] a=[1,4]
+</pre>
+            <h5>如果想让数组的length属性变成不可写，可以通过defineProperty()方法。</h5>
+<pre>
+    a=[1,2,3];
+    Object.defineProperty(a,"length",{
+        writeable:false
+    });
+    a.length=0;
+    a.length //3
+</pre>
+            <h5>push()和pop()都修改并替换元素数组而非生成一个修改办的新数组。</h5>
+            <h5>数组还拥有toString()和toLocaleString()方法，如果不使用任何参数和调用join()方法返回的字符串是一样的</h5>
+<pre>
+    [1,2,3].toString() //'1,2,3';
+    ["a","b","c"].toString() //'a,b,c'
+</pre>
+            <h4>7.9 es5中的数组方法</h4>
+            <h5>forEach()使用3个参数调用该函数：数组元素、元素的索引和数组本身。</h5>
+            <h5>map()和forEach()差不多，但是传递给map()的函数应该有返回值，map()返回的是新数组，他不会修改调用的数组</h5>
+<pre>
+    a=[1,2,3];
+    b=a.map(function(x){
+        return x*x;
+    });//b为[1,4,9]
+</pre>
+            <h5>fliter()方法返回的数组元素是笤俑的数组的一个子集。它是靠函数的逻辑判定的。返回是true则调用forEach()或者map()方法。</h5>
+<pre>
+    a=[5,4,3,2,1];
+    smallvalues=a.filter(function(x){
+        return x<3 //[2,1]
+    });
+    everyother=a.filter(function(x,i){
+        return i%2==0 //[5,3,1]
+    })
+</pre>
+            <h5>every()和some()方法是数组的逻辑判定,返回值是true或者是false</h5>
+<pre>
+    a=[1,2,3,4,5];
+    a.eveny(function(x){
+        return x<10   //true:所有的值<10
+    })
+    a.some(function(x){
+        return x%2===0 //true a含有偶数
+    })
+</pre>
+            <h5>reduce()和reduceRight(),可以称之为“注入”和“折叠”。他们有2个参数，第一个参数是执行的函数，第二个参数是初始值。当第二个参数为空的时候，会自动将数组的第一个元素当作气初始值。reduceRight是从索引最大的开始一直往小的</h5>
+<pre>
+    var a=[1,2,3,4,5];
+    var sum=a.reduce(function(x,y){
+        return x+y
+    },0)
+    return sum//15
+
+    var big=a.reduceRight(function(x,y){
+        return Math.pow(value,accumulator);
+    })
+</pre>
+            <h5>indexOf()和lastIndexOf()一个是从查找符合条件的第一个索引，后面那个是从查找符合条件的最后一个索引。</h5>
+<pre>
+    //查找所有符合条件的x，并返回一个包含匹配索引的数组
+    function findall(a,x){
+        var result=[],
+            len=a.length,
+            pos=0;
+        while(len>pos){
+            pos=a.indexOf(x,pos);
+            if(pos===-1) break;
+            results.push(pos);
+            pos+1;
+        }
+        return results; //返回包含索引的数组
+    }
+</pre>
+            <h5>可以通过Array.isArray()函数来判断是否为数组对象以及非数组对象。</h5>
+<pre>
+    //这个是他的原理
+    var isArray=Function.isArray||function(o){
+        return typeof o==="object"&&
+        Object.prototype.toString.call(o)=="[object Array]";
+    }
+</pre>
+            <h5>参数Arguments就是类数组对象</h5>
+        </div>
+    </div>
+    <div class="eigth">
+        <h3>第八章</h3>
+        <p>
+            <h4>前言</h4>
+            <h5>形参和局部变量一样工作，一般调用时候除了调用实参外还会调用this这个上下文。</h5>
+            <h5>闭包就是javascript可以把函数赋值给变量，或者作为参数传递给其他函数。函数可以嵌套在其他函数中定义。</h5>
+            <h4>8.1 函数定义</h4>
+            <h5>2种形式，一种是函数声明、另外一种是定义表达式。以表达式来定义的函数，函数名称是可以选择的。定义函数表达式比较适合用于定义只会用到一次的函数。</h5>
+<pre>
+    声明表达式
+    function foo(){};
+    定义表达式
+    var k=function foo(){};
+</pre>
+            <h5>函数名称的命名一般通常第一个字符为小写，如果包含多个单词时，一种约定是用下划线分割如link_this(),另外一个是将后面单词的首字母大写如linkThis(),有些函数用作内部函数或者私有函数，一般都是用下划线作为前缀</h5>
+            <h5>函数声明能被提前，但是变量赋值是不能被提前的。</h5>
+            <h5>函数声明语句并不是真正的语句，他们可以内钳在其他函数中，但是不能出现在循环或者条件判断中。</h5>
+            <h4>8.2 函数调用</h4>
+            <h5>函数调用的4种方法，作为函数、作为方法、作为构造函数，通过apply()或者call()方法。</h5>
+<pre>
+    函数调用
+    var totla=distance(1,2)+distance(3,4)
+    方法调用
+    o.m=function(){}//给o对象添加一个属性；
+    o.m() //调用o的这个方法
+</pre>
+            <h5>当方法返回一个对象，我们还可以使用这个对象的方法，我们称之为链式。</h5>
+            <h5>方法调用和函数调用有一个区别就是this，通过方法调用可以用this去指向引用的对象。</h5>
+            <h5>嵌套的函数不会从调用他的函数中继承this，一般如果我们要在嵌套的函数中使用外面的这个this，一般是声明一个变量self进行赋值保存</h5>
+            <h5>javascript不允许给this定义。</h5>
+            <h5>构造函数的调用过程中如果有参数，首先是对参数进行计算，然后之后的处理方式和调用函数是一样的，如果构造函数没有参数的话，最外面的()是可以省略的。</h5>
+            <h5>构造函数通常不使用return</h5>
+            <h5></h5>
+<pre>
+    var o={
+        m:function(){
+            var self=this;//这个this指向的是o；将他保存到self中
+            console.log(this===o) //true
+            f();
+        };
+        function f(){
+            console.log(this===o) //false
+            console.log(self===o) //true
+        }
+    }
+
+    可以在函数内部修改参数的值
+    function foo(x){
+        arguments[0]=null;
+        console.log(x) //这个时候不管传入的是什么，返回时候都是null
+    }
+</pre>
+            <h4>8.3 函数的实参和形参</h4>
+            <h5>一般如果传入的实参少于定义的形参的时候，少的实参会使用undefined定义，所以最好的方法就是给其传入null。</h5>
+            <h5>如果传入的实参超过形参，一般都会用arguments.length去检测参数的个数，然后传入的时候用一般都会用arguments[0]这样的方法。</h5>
+            <h5>如果参数多的话，一般会采用将一个对象整体作为一个参数传入到函数里面去，然后根据这个对象的每个属性去作为函数需要的参数</h5>
+            <h5>实参对象是一个类数组对象，可以通过数字下表来访问实参，或者通过名字。</h5>
+            <h5>实参对象还定义了caller和callee属性，这2个属性都不能读写。</h5>
+<pre>
+    var option={
+        "name":"zhangsan",
+        "age":23
+    };
+    function foo(option){
+        var k=option.name  //将对象整体放到函数里面去。
+    }
+</pre>
+            <h4>8.6 闭包</h4>
+            <h5>函数对象可以通过作用域链相互关联起来，函数体内部的变量都可以保存在函数作用域内。这种特性叫做闭包。对于闭包来说，函数定义时候的作用域链到函数执行时候依然有效</h5>
+<pre>
+    可以通过闭包的形式读取函数的局部变量；
+    var name="张三";
+    function foo(){
+        var name="李四"；
+        function second(){
+            return name;
+        };
+        return second
+    };
+    foo()() //李四
+</pre>
+        <h5>如果定义一个要用到的变量，但是不想写成全局变量，这时候可以用闭包的方式去写，而且闭包里面的函数可以用自调用函数去写这样最方便</h5>
+<pre>
+    function foo(){
+        (function(){
+            //逻辑
+        }())
+    }
+</pre>
+<pre>
+    案例分析
+    function constfuncs(){
+        var funcs=[];
+        for(var i=0;i<10;i++){
+            funccs[i]=function(){return i};
+        }
+    }
+    var funcs=constfuncs();
+    funcs[5]() //不管是1-10 输出的都是10，因为当var funcs=constfuncs();执行完成之后，i的值就是变成了10，然后一直会保存下去。
+</pre>
+            <h4>8.7 函数属性、方法和构造函数</h4>
+            <h5>可以通过bind把元素绑定给函数</h5>
+<pre>
+    function f(y){
+        return this.x+y
+    }
+    var o={x:2};
+    var g=f.bind(o);
+    g(2)//2+2=4
+
+    另外一个案例
+    function f(y,z){return this.x+y+z}
+    var g=f.bind({x:1},2) //把this绑定给了g，也就是说this.x=1; 2赋值给了y
+    g(3) //把3赋值给了z，所以最后得到的答案就是1+2+3=6；
+</pre>
+            <h4>8.7 Function()构造函数</h4>
+            <h5>构造函数无法捕获局部作用域。</h5>
+        </p>
+    </div>
+    <div class="nine">
+        <h3>第九章 类和模块</h3>
+        <p>
+            <h4>前言</h4>
+            <h5>如果2个对象继承自同一个原型，一般认为他们是由同一个构造函数创建并初始化的。</h5>
+            <h4>9.1 类和原型</h4>
+<pre>
+    工厂方式
+    function range(from,to){
+        var r=inherit(range.methods);
+        r.from=from;
+        r.to=to
+        return r
+    }
+
+    range.methods={
+        includes:function(x){
+            return this.form<=x&&x<=this.to
+        },
+        foreach:function(f){
+            for(var x=Math.ceil(this.from); x<=this.to;x++){f(x)}
+        },
+        toString:function(){
+            return "("+this.from+"..."+this.to+")";
+        }
+    }
+
+    var r=range(1,3)  //创建一个范围对象
+    r.includes(2)  //true
+    r.foreach(console.log) // 1 2 3
+    console.log(r)  //(1...3)
+
+    构造函数方式
+    function Range(from,to){
+        this.from=from;
+        this.to=to;
+    }
+    Range.prototype={
+        constructor:Range,//显式的给其定义了一个构造函数，这样他的实例就都会有constructor这个属性。这里如果用Range.prototype.includes这样的写法的话就不需要显式给其constructor这个属性
+        includes:function(x){
+            return this.form<=x&&x<=this.to
+        },
+        foreach:function(f){
+            for(var x=Math.ceil(this.from); x<=this.to;x++){f(x)}
+        },
+        toString:function(){
+            return "("+this.from+"..."+this.to+")";
+        }
+    };
+
+    var r=nwe Range(1,3);//实例化一个对象
+    r.includes(2)  //true
+    r.foreach(console.log) // 1 2 3
+    console.log(r)  //(1...3)
+</pre>
+            <h5>构造函数是类的公有标识。构造函数的本质就是给类起了一个名称。</h5>
+            <h5>constructor属性，constructor属性的值是一个函数对象。</h5>
+<pre>
+    var p=F.prototype;
+    var c=p.constructor;
+    c===F  //F.prototype.constructor==F
+</pre>
+            <h5>三种对象的属性和以下三种类成员非常相似。第一种构造函数、第二种原型对象、第三种实例对象</h5>
+<pre>
+    用来定义简单类的函数
+    function defineClass=(constructor.methods,statics){
+        if(methods) extend(constructor.prototype,methods);
+        if(statics) extend(constructor,statics)
+    }
+</pre>
+        </p>
+            <h5>
+
+            </h5>
+    </div>
+    <div class="ten">
+        <h3>第十章</h3>
+        <p>
+            <h4>前言</h4>
+            <h5>正则表达式是一个描述字符模式的对象。正则表达式有string和regexp的方法。</h5>
+            <h5>调用的方式有2中，第一个是新建一个regexp对象，第二种是用简单的方法使用正则表达式直接量//,然后在斜杠里面写要写的表达式。</h5>
+<pre>
+    正则表达式简单写法
+    var pattern=/s$/; 匹配所有以s结尾的字符串。$表示匹配以它之前的字母结束的表达式。
+    构造函数的写法
+    var pattern=new RegExp("s$");
+</pre>
+            <h5>同一段代码所表示正则表达式直接量的每次运算都返回新对象。</h5>
+<pre>
+    function getRE(){
+        var re=/[a-z]/;
+        re.foo="bar";
+        return re;
+    }
+     var reg=getRE();
+     var re2=getRE();
+    console.log(reg===re2)  //false 因为用正则表达式每一次返回的实例都是不一样的。
+</pre>
+            <h5>正则表达式中的所有字母和数字都是按照字面含义进行匹配的。js的正则表达式也支持非字母的字符匹配，但是需要用\作为前缀进行转义。比如\n用来匹配换行符。</h5>
+<pre>
+    \o nul字符  \v垂直制表符       \f 换页符     \r回车符      \uxxxx   \w表示一个单词等价于[a-zA-Z0-9]
+    \t 制表符（tab就是一个超大空位的制表符）   \n换行符        \cx        \d等价于[0-9]  \D等价于[^0-9] \s等价于空格符
+</pre>
+            <h5>在正则表达式中，许多标点符号具有特殊含义，他们是^ $ . * + ? = ! : | \ / ( ) { }，如果想让这些符号没有特殊含义，能被正常解析就可以在这些符号前面加\</h5>
+            <h5>字符类，将直接量字符单独放在方括号就组成了字符类，字符类可以匹配他所包含的任意字符。/[a,b,c]/ 就可以和字母“a”,"b","c"中的任意一个都匹配。</h5>
+            <h5>^用来否定字符类，他匹配所有不包含在字符号内的字符。/[^abc]/ 这个就是匹配字母“a”,"b","c"以外的所有字符。</h5>
+            <h5>字符类可以使用连字符来表四字符范围，比如a到字母z /[a-z]/ ,要匹配拉丁字母表中的任何字母和数组/[a-zA-Z0-9]/</h5>
+            <h5>正则表达式中用来表示重复字符语法</h5>
+<pre>
+    [...] 方括号里面的任意字符
+    [^...] 不再方括号里面的任意字符
+    . 除换行符和其他unicode行终止符之外的任意制符
+    \w 任意的ascⅡ 字符组成的单词 相当于[a-zA-Z0-9]
+    \W \w的求反
+    \s 任何空白符
+    \S 非空白符
+    \d 任意的ascⅡ数字，相当于[0-9]
+    \D 相当于[^0-9]
+    \b 退格直接量
+    {n,m} 匹配前一项至少n次，但是不超过m次
+    ｛n,｝匹配前一项n次或者更多
+    ｛n｝ 匹配前一项n次
+    ？ 匹配前一项0次或者1次等价于｛0，1｝
+    + 匹配前一项1次或者多次 等价与｛1，｝
+    * 匹配前一项0次或者多次等价与｛0，｝
+</pre>
+            <h5>非贪婪的匹配只需要在后面加一个？就可以了，非贪婪匹配匹配的结果是从第一个字符开始的，所以在匹配aaab时候用[a+b]和[a+?b]的结果是一样的。</h5>
+            <h5>选择项的尝试匹配次序是从左到右，直到发现了匹配项。</h5>
+            <h5>/ab|cs|ef/ 可以匹配"ab" "cs" "ef" 选择项的匹配是从左到右，直到找到匹配项，如果左边匹配到了就忽略右边的匹配项，即使他产生了更好的匹配，比如/a|ab/ 匹配ab时候返回结果总司a</h5>
+            <h5>正则表达式中的圆括号有多种作用，1是把单独的项组合成子表达式。比如/(ab|cd)+ef/ 可以理解为把（ab|cd）作为一个整体去匹配，也可以单独去匹配（ab|cd）</h5>
+            <h5>圆括号的第二种方法就是在完整的模式中定义子模式,主要是用于输出结果</h5>
+            <h5>圆括号第三种是用于嵌套的子表达式 \1表示第一个带圆括号的子表达式。</h5>
+<pre>
+    第二种方法假设我们想要得到一个小写字母后面有一位或者多个数字，但是我们只想获得这些数字，这时候就可以这样写
+    /([a-z]+\d)+/
+
+    第三种方法实例
+    /['"][^'"]*['"]/ 这样写就是去匹配被包含在引号里面的内容结果会有4种 "" '" "' '',显然中间2中不是我想要的结果，所以可以用\1去替代。
+    /(['"])[^'"]*\1/ 这样写正则表达式不允许用双引号括起的内容有单引号，反之亦然。
+
+</pre>
+<pre>
+    | 表示选择，匹配该符号左边的子表达式或者右边的子表达式
+    (...） 将几个项组合成一个单元，这个单元可以通过* + ？| 等符号加以修饰，并且会记住和这个组合相匹配的字符串以此给之后的引用使用。
+    (?:...)只组合，把项组合成一个单元，但不记忆与改组相匹配的字符。
+    \n 和第n个分组第一次匹配的字符相匹配，组是圆括号里面的子表达式，也有可能是嵌套的
+</pre>
+            <h5>匹配单词“javascript” 使用正则表达式/^javascript$/ 用^开始，然后用$结束。/\s\java/可以用来匹配前后都有空格的单词“java”,但是不能匹配到开始和结尾为“java”的字符串。</h5>
+            <h5>^在[]里面是求反的意思，但是不再[]的时候被用作是开始匹配的标记，而$被看作是结束的标记。</h5>
+            <h5>\b被当作是边界处理，而\B是被当作非边界处理。</h5>
+<pre>
+    /\B[Sc]ript/  能和posiript匹配成功，但是不能和script以及Script的单词匹配成功，因为后面2个都是以S或者s作为开头，前面有空白符
+</pre>
+            <h5>如果有(?=表达式)这种形式出现的表示()里面的表达式必须被正确匹配到。而(?!=表达式)表示接下来的字符都不必去匹配。</h5>
+<pre>
+    这里表示的都不是在[]里面的内容
+    ^ 表示开始匹配字符串
+    $ 表示匹配结束
+    \b 表示边界，注意在[\b]表示的是退格符
+    \B \b的反义
+    （?=p） 先匹配p，但不能包含p的哪些字符
+    （？！p） 接下来的字符不与p匹配
+</pre>
+            <h4>10.1 修饰符</h4>
+            <h5>i 不区分大小写 g 全局匹配 m 多行模式中执行匹配。这几个修饰符可以结合使用 </h5>
+            <h4>10.2 用于模式匹配的string方法</h4>
+            <h5>第一种search() 其参数是一个正则表达式，返回第一个与之匹配的子串的起始位置，如果找不到返回-1；案例如"javascript".search(/script/i),不支持全局搜索。</h5>
+            <h5>第二种是replace()用于执行检索和替换操作，第一个参数是正则表达式，第二个是要替换的字符串。如果设置了g所有匹配到的结果都会被修改。如果不带g只会匹配到第一个子串。</h5>
+            <h5>第三种是match() 是最常用的string正则表达式，唯一参数是正则表达式，返回的结果是由匹配结果组成的数组。a[0]表示完整的结果，a[1]表示正则表达式中第一个（）返回的结果。</h5>
+            <h5>第四种方法就是split(),这个返回的是一个数组。</h5>
+            <h4>10.3 regexp对象</h4>
+            <h5>regexp对象可以带有2个参数，第一个是正则表达式，第二个是可选参数，也就是之前说的i、g、m。案例var zipcode=new RegExp("\\d{5}","g")</h5>
+            <h5>Regexp的方法只要有2种，一个是exec()（和match()方法很类似），一个是test()，返回的结果是true或者false</h5>
+        </p>
+    </div>
+    <div class="eleven">
+        <h3>第十一章</h3>
+        <p>
+            <h4>11 javascript的子级</h4>
+            <h5>javascript不包含块级作用域。</h5>
+            <h5>var可以用let来代替。通过var声明的变量在函数内部都可用，但是用let声明的变量则只属于就近的花括号括起来的语句块。</h5>
+            <h5>在声明语句中使用let和在循环初始化中使用let是不一样的，对于前者来说，变量初始化表达式是在变量的作用域中计算的，但是对于后者来说，变量的初始化表达式是在变量的作用域之外计算的。</h5>
+            <h5>如果在var和let之前引用了变量，这时候变量是存在的，只不过它的值是undefined</h5>
+        </p>
+    </div>
+    <div class="twelve">
+        <h3>第十二章</h3>
+        <p>
+            <h4>前言</h4>
+            <h5>rhino是基于java的javascript解析器，实现了通过javascript程序访问整个java api，node是google的v8解析器的特别版本。</h5>
+            <h5>node是基于c++的高速javascript解释器，绑定了用于进程、文件和网络套接字等底层unix api，还绑定了http客户端和服务器api。</h5>
+            <h5>node的绑定都是异步的，而且node程序默认是不阻塞的，所以他们通常具备强大的可伸缩能力并能有效的处理高负荷。</h5>
+            <h5>由于api都是异步的，所以node依赖事件处理程序，通常使用嵌套函数和闭包来实现。</h5>
+        </p>
+    </div>
+    <div class="thirteen">
+        <h3>第十三章</h3>
+        <p>
+            <h4>13.1 客户端javascript</h4>
+            <h5>location对象制定当前显示在窗口中的url，并允许脚本往窗口中载入新的url。</h5>
+            <h5>window对象还定义了一些方法，比如alert()、setTimeout(),可以注册一个函数，在特定的一段时间后触发这个回调函数。</h5>
+            <h5>web浏览器是简单操作系统的概念。</h5>
+            <h5>
+                在javascript中嵌入客户端的javascript代码有4种方法，第一种内联，第二种放在<script></script>的scr制定的外部文件中，
+                第三种放置在html事件处理程序中，该事件处理程序由onclick、onmouseover这样的html属性制定，第四种是放在一个url里，这个url使用
+                特殊的“javascript：”协议。现在用第四种javascript:"url"这样的方式已经很少了。基本使用第2种。
+            </h5>
+            <h5>如果想确保javascript：url不会覆盖当前文档，可以用void操作符强制函数调用或给表达式赋予undefined值。</h5>
+            <h5>
+                javascript程序的执行有2个阶段，第一阶段，载入文档内容，并执行<script></script>元素里面的代码。当文档载入完成，所有脚本执行完成之后
+                就进入第二个阶段，这个阶段是异步的，由事件驱动，web浏览器调用事件处理程序函数来相应异步发生的事情。
+            </h5>
+            <h5>当html解析器遇到<script></script>元素时，他默认必须先执行脚本，然后再恢复文档的解析和渲染。如果想让解析器继续执行文档的渲染和解析，而不是去
+            执行脚本，这时候可以用defer或者async的方式去组织。</h5>
+            <h5>onclick、onchange等称之为事件驱动。</h5>
+            <h5>addEventListaner()可以注册多个监听器。在ie8之前是使用attachEvent()</h5>
+<pre>
+    function onload(f){
+        if(onload.loaded){
+            window.setTimeout(f,0);
+        }
+        else if(window.addEventListener){
+            window.addEventListener("load",f,false);
+        }
+        else if(window.attachEvent){
+            window.attachEvent("onload",f);
+        }
+    }
+    onload.loaded=false;
+    onLoad(function(){
+        onload.loaded=true;
+    })
+</pre>
+            <h5></h5>
+            <h5></h5>
+            <h5></h5>
+        </p>
+    </div>
+    <div class="fourteen">
+        <h3>第十四章</h3>
+        <p>
+            <h4></h4>
+            <h5></h5>
+        </p>
+    </div>
+    <div class="fifteen">
+        <h3>第十五章</h3>
+        <p>
+            <h4></h4>
+            <h5></h5>
+        </p>
+    </div>
+    <div class="sixteen">
+        <h3>第十六章</h3>
+        <p>
+            <h4></h4>
+            <h5></h5>
+        </p>
+    </div>
+    <div class="seventeen">
+        <h3>第十七章</h3>
+        <p>
+            <h4></h4>
+            <h5></h5>
+        </p>
+    </div>
+    <div class="eighteen">
+        <h3>第十八章</h3>
+        <p>
+            <h4></h4>
+            <h5></h5>
+        </p>
+    </div>
+    <div class="nineteen">
+        <h3>第十九章</h3>
+        <p>
+            <h4></h4>
+            <h5></h5>
+        </p>
+    </div>
+    <div class="twenty">
+        <h3>第二十章</h3>
+        <p>
+        <h4></h4>
+        <h5></h5>
+        </p>
+    </div>
+    <div class="twentyone">
+        <h3>第二十一章</h3>
+        <p>
+            <h4></h4>
+            <h5></h5>
+        </p>
+    </div>
+    <div class="twentytwo">
+        <h3>第二十二章</h3>
+        <p>
+            <h4></h4>
+            <h5></h5>
+        </p>
+    </div>
+</body>
+</html>

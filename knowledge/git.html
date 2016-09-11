@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>git常用命令代码</title>
+</head>
+<body>
+    <div>
+        <div>创建git本地仓库步骤</div>
+        <ul>
+            <li>首先在本地的任意一个地方新建一个文件夹命名任意比如（git-repositroy）</li>
+            <li>然后打开git bash这个命令行，定位到上一步新建的那个文件夹（cd git-repositroy）</li>
+            <li>然后在git bash里面输入git init这时候你会发现git-repositroy这个文件夹里面出现了.git的一个文件夹，这个文件夹主要是用来管理版本库的。</li>
+            <li>然后在git-repositroy这个文件夹里面添加文件，比如说readme.txt</li>
+            <li>然后在git bash里面输入git add readme.txt就把这个文件加入到版本库的暂存区里面去了，之后输入git commit -m "这是第一次提交内容"   这个是提交该文件到版本库里面-m后面是写本次修改的内容。</li>
+        </ul>
+        <div>git如何和github同步工作</div>
+        <ul>
+            <li>第一步在github上的setting里面的ssh and gpg keys里面的key添加公钥，公钥就是id_rsa.pub里面的内容，这是要把自己的电脑和github绑定在一起，这样就能推送了</li>
+            <li>第二步是在github上新建一个仓库，然后在git bash上面输入 git remote add origin git@github.com:mcfly001/filename.git</li>
+            <li>第三步就是git push -u origin master，把本地的内容pull到github上面去。</li>
+        </ul>
+        <div>git如何进行分支管理</div>
+        <ul>
+            <li>首先是创建一个分支，并且切换到这个分支上。git checkout -b dev  -b表示新建并切换，相当于git branch dev 以及git checkout dev</li>
+            <li>查看当前的分支状态，也就是当前是哪一条分支 git branch，这时候会出现所有的分支，在分支前面有*表示当前的分支。</li>
+            <li>然后对文件进行修改、add、commit</li>
+            <li>然后转换回master分支上 git checkout master,这时候你会发现你修改的内容不见了，因为你修改的是dev分支上面的内容</li>
+            <li>再把dev分支上面的工作成果合并到master上面来 git merge dev  这里需要注意的是通常合并会用fast forward模式，我们也可以禁用fast-forword模式，改用--no-ff方式合并 git merge --no--ff -m "用新的方法合并" dev</li>
+            <li>删除多余的dev分支 git branch -d dev</li>
+            <li>然后看一下目前还剩几条分支 git branch，你会发现目前只有master这一条分支了</li>
+        </ul>
+        <div>一些其他注意事项</div>
+        <ul>
+            <li>一般创建4个分支，master分支是时刻需要保持同步的，一般不在上面开发，都是要发布版本了才叫dev上面的合并上去，dev分支是大家一起在这个分支上面开发的，bug分支是用于bug的专门弄出来的分支，feature分支是用于开发新功能的分支</li>
+        </ul>
+        <div>git一些常用的命令</div>
+<pre>
+    git init                //这个是把本文件变成一个版本库，该操作会在该文件夹里面生成一个.git的一个文件夹
+    git add xx              //xx表示文件名，该操作会将这个文件放到版本库里面的暂存区里面
+    git commit -m "xx"      //xx表示本次说明修改的内容，-m表示用于添加本次修改的文字说明
+    git status              //查看当前版本库的状态，通过这个我们可以知道当前哪些文件放在暂存区了但是还没提交上去
+    git diff                //这个操作是查看哪些内容是修改了，具体修改了什么
+    git log                 //这个操作是查看有那几个版本，git log命令显示从最近到最远的提交日志，我们可以看到3次提交，最近的一次是append GPL，上一次是add distributed，最早的一次是wrote a readme file。
+                            如果嫌输出信息太多，看得眼花缭乱的，可以试试加上--pretty=oneline参数
+    git reset --hard Head^  //这个操作是返回上一个版本，如果是^^表示返回上上一个版本，如果想返回前面第10个版本可以用HEAD~10来表示。hard后面也可以直接输入版本号的id，这样就能返回之前或返回到最新版本。这里的id（版本号）可以不用写全。
+    git reflog              //这个操作是返回所有的版本号（id），获取到所有记录过的版本。假设我现在的版本是最新的，我用git reset --hard HEAD^返回到之前的版本了，现在又想返回到最新的版本，但是我把git bash关闭了我不知道最新版本的版本号（id）是多少了，这时候就可以用git reflog
+    git checkout --file     //这个操作表示在工作区的操作全部撤销掉，file表示文件名。这里分2种情况，第一种情况是还没有git add，这时候有2种方式去复原，一种是手动修改，第二种是用git checkout file，这样就能返回到修改前的内容，第二种情况是已经git add了（假设这时候的版本为a），这时候如果又修改了，然后用git checkout返回的是git add之后的那个版本，也就是a的版本。
+                                针对第二种情况，如果你已经git add了，如果你想复原怎么办，这时候第一步就是通过git reset --hard HERD将暂存区情空，返回到最新版本的工作区，然后用git checkout就能复原了，
+                                第三种情况就是commit了，这时候操作其实和第二种是一样的，也是要将版本返回到之前的版本，然后用git checkout
+    cat file                //这个操作就是把当前文件里面的内容全部显示出来
+    rm filename             //这个操作是删除文件 如果是误删除了可以使用git checkout还原
+
+    git remote add origin git@github.com:michaelliao/learngit.git
+    //这个命令是让git和github连接起来
+    git branch              //查看分支
+    git branch <name>       //创建分支
+    git checkout <name>     //切换分支
+    git checkout -b <name>  //创建+切换分支
+    git merge <name>        //合并某分支到当前分支，默认为Fast forward模式
+    git branch -d <name>    //删除分支
+    git log --graph         //可以查看历史情况图形形式
+    git merge --no-ff -m "xx"  //这是用新的一种模式进行合并分支
+    git stash               //保存当前的工作状态
+    git stash list          //列出工作状态列表
+    git stash apply         //将保存的工作状态拿出来，但是不删除保存的内容
+    git stash drop          //将保存的工作状态删除
+    git stash pop           //将保存的工作状态拿出来并且删除保存的工作状态内容
+    git branch -D <name>    //丢弃一个没有被合并的分支
+    git remote -v           //查看远程的库
+    git push origin master  //将指定的分支推送到远程库里
+    git tag v1.0            //给分支定义版本号
+    git remote remove origin//删除远程的origin
+    git remote add origin git@github.com:mcfly001/repositoryname.git //本地和github建立联系
+    git pull git@githun.com:mcfly001/repositoryname.git master 从github上获取
+    git push origin master  //从本地提交到github上面
+</pre>
+    </div>
+
+</body>
+</html>

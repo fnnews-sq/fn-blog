@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>zyj的技术知识汇总</title>
+    <link href="../css/bootstrap.min.css" type="text/css" rel="stylesheet">
+    <link href="../css/firstpage.css" type="text/css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+    <div class="nav" ng-controller="firstController">
+        <header class="header">
+            <span class="m-l nav-title">前端技术知识总结</span>
+            <ul class="pull-right">
+                <li class="pull-right nav-li {{item.class}}" ng-repeat="item in headernavdata" ng-click="changeDirectory(item.class)">{{item.name}}</li>
+            </ul>
+        </header>
+        <section class="content">
+                <div class="left-nav">
+                    <ul>
+                        <li class="m-b-small cursorpoint" ng-repeat="items in directory">
+                            <div class="firstdirectory" ng-click="toggle($event)"><i class="fa fa-caret-right"></i>&nbsp;{{items.name}}</div>
+                            <ul class="m-t m-l-small">
+                                <li class="m-t-small" ng-repeat="second in items.directory">
+                                    <div class="seconddirectory">{{second.secondname}}</div>
+                                    <ul class="m-t-mini m-l-small">
+                                        <li ng-repeat="third in second.thirdlevel">
+                                            <div class="thirddirectory">{{third}}</div>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="right-content">
+                    <div class="right-contenttop fullheight">
+                        <div class="knowledge">
+                            <div>本节知识点</div>
+                            <div class="textnotes">
+
+                            </div>
+                        </div>
+                        <div class="javascriptcode">
+                            <div>本节javascript代码案例</div>
+                            <div class="javascriptnode">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+    </div>
+<script type="text/javascript" src="../js/angular.min.js"></script>
+<script type="text/javascript" src="../js/Module.js"></script>
+<script type="text/javascript" src="../js/service.js"></script>
+</body>
+</html>

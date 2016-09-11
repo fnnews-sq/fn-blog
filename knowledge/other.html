@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>其他内容</title>
+</head>
+<body>
+    <div class="case1">
+        <h4>冒泡以及阻止事件冒泡</h4>
+        <div style="margin-left:20px">
+            <p>event.preventDefault()表示会移除当前元素默认链接（超链接）或者部分事件（比如submit）</p>
+<pre>
+        <input value="<a href='https://www.baidu.com/' class='link'></a>" style="width:400px" />
+            $(".link").click(function(e){
+                //这时候如果点击a标签，就不会链接到百度页面了
+                e.preventDefault();
+            })
+        完整的写法如下
+        function stopDefault(e){
+            if ( e && e.preventDefault ){
+                e.preventDefault();
+            }else{
+                window.event.returnValue = false;
+            }
+            return false;
+        }
+    </pre>
+            <p>event.stopPropagation()表示的是移除该元素祖先级别的事件，而不会移除自己绑定的事件。</p>
+<pre>
+        代码如下：
+        function stopPro(event){
+            var e=event||window.event;
+            if(e.stopPropagation){
+                e.stopPropagation();
+            }else{
+                //这个是为了兼容ie；
+                e.cancelBubble=true;
+            }
+        }
+    </pre>
+        </div>
+    </div>
+    <div class="case2">
+        <h4>给元素动态添加事件</h4>
+        <div style="margin-left: 20px;">
+            <p>addEventListener和普通的on+"type"(如onclick)事件有区别，addEventListener可以绑定多个相同的事件（如多个click事件）会有一个事件队列，而普通的on+"type"如果绑定多个同类型事件如（onclick）前面的事件会被后面的事件所覆盖</p>
+<pre>
+    //第一种方法
+    var tilt=document.getElementById("news");
+     if(window.addEventListener){
+        tilt.addEventListener('click', alert('cc'), false);
+        tilt.addEventListener('click', alert('cc'), false);
+    } else { // IE
+        tilt.attachEvent('onclick',  function(){alert('changchang');});
+        tilt.attachEvent('onclick',  function(){alert('changchang');});
+    }
+
+    //第二种方法
+    $(document).on("click","#news",function(){
+        alert("c");
+    })；
+</pre>
+            <p>这里需要注意的是addEventListener如果要移除需要用removeEventListener，而他们的第二个参数fn一定要写在外面，不然会移除不了</p>
+<pre>
+    具体写法如下
+    var tilt=document.getElementById("news");
+    tilt.addEventListener("click",fnModal,false);
+    tilt.removeEventListener("click",fnModal,false);
+    function fnModal(){
+        alert('k');
+    }
+    如果这里直接用alert('k')代替fnModal，会导致事件移除不了，
+</pre>
+            <p>addEventListener第三个参数表示是冒泡还是捕获，一半选择用false，表示事件是从子级开始冒泡到父级，也就是说如果你不想给当前绑定事件的这个元素冒泡，你就可以选择用false，然后在代码第一行阻止事件冒泡（e.stopPropagation）</p>
+            <p>addEventListener第三个参数如果选择true的话就没办法组织事件冒泡了，也就是说你点击当前元素的时候，先执行的是父级元素事件，最后是自己的事件，这样的话就不能组织事件冒泡了</p>
+<pre>
+     <div id="divParent" style="width:300px;height:200px;background: red">
+         <div id="divChild1" style="width:200px;height:80px;background: yellow">
+             <div id="laseChild" style="width:100px;height:20px;background: blue"></div>
+         </div>
+     </div>
+执行顺序
+parent/child/laseChild 相应设置为true/true/true(false)
+parent/laseChild/child 相应设置为true/false/true(false)
+child/laseChild/parent 相应设置为false/true/true(false)
+laseChild/child/parent 相应设置为false/false/true(false)
+
+var parent=document.getElementById("divParent");
+var child=document.getElementById("divChild");
+var laseChild=document.getElementById("laseChild");
+
+parent.addEventListener("click",function(){
+   alert("parent");
+},false);
+
+child.addEventListener("click",function(e){
+   alert("child");
+},false);
+
+laseChild.addEventListener("click",function(e){
+   alert("laseChild");
+},true);
+</pre>
+        </div>
+    </div>
+    <div class="case3">
+        <h4>日期转换类工具</h4>
+        <div style="margin-left:20px">
+            <span>http://momentjs.cn/</span>
+        </div>
+    </div>
+    <div class="case4">
+        <h4>百度分享工具</h4>
+        <div style="margin-left:20px">
+            <p>样式上面的调整可以用css去修改</p>
+            <p>分享的那段代码一定要单独写在一个方法里面，否则url等这些地址是不会变化的</p>
+        </div>
+    </div>
+    <div class="case5">
+        <h4>判断移动端是否状态（横屏和竖屏）</h4>
+        <div style="margin-left:20px">
+<pre>
+    function checkOrient() {
+
+    if (window.orientation == 0 || window.orientation == 180){
+        var screenOrientation = 'portrait';
+    }
+    else if (window.orientation == 90 || window.orientation == -90){
+        var screenOrientation = 'landscape';
+    }
+    return screenOrientation;
+}
+    // 添加事件监听
+    addEventListener('load', function(){
+    checkOrient();
+    window.onorientationchange = checkOrient;
+    });
+</pre>
+        </div>
+    </div>
+</body>
+</html>
