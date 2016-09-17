@@ -54,11 +54,11 @@
     git remote add origin git@github.com:michaelliao/learngit.git
     //这个命令是让git和github连接起来
     git branch              //查看分支
-    git branch <name>       //创建分支
-    git checkout <name>     //切换分支
-    git checkout -b <name>  //创建+切换分支
-    git merge <name>        //合并某分支到当前分支，默认为Fast forward模式
-    git branch -d <name>    //删除分支
+    git branch "name"       //创建分支
+    git checkout "name"     //切换分支
+    git checkout -b "name"  //创建+切换分支
+    git merge "name"        //合并某分支到当前分支，默认为Fast forward模式
+    git branch -d "name"    //删除分支
     git log --graph         //可以查看历史情况图形形式
     git merge --no-ff -m "xx"  //这是用新的一种模式进行合并分支
     git stash               //保存当前的工作状态
@@ -66,13 +66,13 @@
     git stash apply         //将保存的工作状态拿出来，但是不删除保存的内容
     git stash drop          //将保存的工作状态删除
     git stash pop           //将保存的工作状态拿出来并且删除保存的工作状态内容
-    git branch -D <name>    //丢弃一个没有被合并的分支
+    git branch -D "name"    //丢弃一个没有被合并的分支
     git remote -v           //查看远程的库
     git push origin master  //将指定的分支推送到远程库里
     git tag v1.0            //给分支定义版本号
     git remote remove origin//删除远程的origin
     git remote add origin git@github.com:mcfly001/repositoryname.git //本地和github建立联系
-    git pull git@githun.com:mcfly001/repositoryname.git master 从github上获取
+    git pull git@github.com:mcfly001/repositoryname.git master 从github上获取
     git push origin master  //从本地提交到github上面
 </pre>
     </div>
